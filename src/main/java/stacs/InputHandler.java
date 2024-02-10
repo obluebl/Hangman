@@ -12,7 +12,7 @@ public class InputHandler {
      * The constructor of InputHandler Class
      */
     public InputHandler() {
-
+        scanner = new Scanner(System.in);
     }
 
 
@@ -21,6 +21,13 @@ public class InputHandler {
      * @return inputLetter.charAt(0) The single letter of user input
      */
     public char getGuessedLetter() {
-        return 'c';
+        System.out.print("Enter your guess (a single letter): ");
+
+        String inputLetter = scanner.nextLine().trim().toLowerCase();
+        while (inputLetter.isEmpty() || !inputLetter.matches("[a-zA-Z]")) {
+            System.out.println("Invalid input. Please enter a single letter:");
+            inputLetter = scanner.nextLine().trim().toLowerCase();
+        }
+        return inputLetter.charAt(0);
     }
 }

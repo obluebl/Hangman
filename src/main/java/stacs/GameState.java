@@ -1,6 +1,9 @@
 package stacs;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 
 /**
@@ -22,7 +25,11 @@ public class GameState {
      */
     public GameState(String targetWord, int maxWrongGuesses)
     {
-
+        this.targetWord = targetWord.toLowerCase();
+        this.maxWrongGuesses=maxWrongGuesses;
+        this.guessRemaining = this.maxWrongGuesses;
+        this.correctLetters = new HashSet<>();
+        this.wrongLetters = new HashSet<>();
     }
 
     /**
@@ -32,7 +39,19 @@ public class GameState {
      */
     public boolean isCorrectLetter(char guessedletter)
     {
-        return false;
+        guessedletter = Character.toLowerCase(guessedletter);
+
+        if(targetWord.contains(String.valueOf(guessedletter)))
+        {
+            correctLetters.add(guessedletter);
+            return true;
+        }
+        else
+        {
+            guessRemaining--;
+            wrongLetters.add(guessedletter);
+            return false;
+        }
     }
 
     /**
@@ -41,7 +60,7 @@ public class GameState {
      */
     public int getGuessReminding()
     {
-        return 0;
+        return guessRemaining;
     }
 
     /**
@@ -50,7 +69,7 @@ public class GameState {
      */
     public int getMaxWrongGuesses()
     {
-        return 0;
+        return maxWrongGuesses;
     }
 
     /**
@@ -58,7 +77,7 @@ public class GameState {
      * @return wrongLetters
      */
     public Set<Character> getWrongLetters() {
-        return new HashSet<>(Arrays.asList('a', 'e', 'i', 'o'));
+        return wrongLetters;
     }
 
     /**
@@ -67,7 +86,19 @@ public class GameState {
      */
     public String getCurrentWordState()
     {
-        return "0";
+        StringBuilder currentState = new StringBuilder();
+        for(char letter : targetWord.toCharArray())
+        {
+            if(correctLetters.contains(letter))
+            {
+                currentState.append(letter).append(" ");
+            }
+            else
+            {
+                currentState.append("_ ");
+            }
+        }
+        return currentState.toString().trim();
     }
 
     /**
@@ -76,7 +107,14 @@ public class GameState {
      */
     public boolean isWon()
     {
-        return false;
+        for(char letter : targetWord.toCharArray())
+        {
+            if(!correctLetters.contains(letter))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -85,6 +123,6 @@ public class GameState {
      */
     public boolean isLost()
     {
-        return false;
+        return guessRemaining <= 0;
     }
 }

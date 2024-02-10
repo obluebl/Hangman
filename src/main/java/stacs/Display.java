@@ -12,7 +12,9 @@ public class Display {
      */
     public void showCurrentState(GameState gameState)
     {
-
+        System.out.println("\ncurrent word: " + gameState.getCurrentWordState());
+        drawHangman(gameState.getGuessReminding(), gameState.getMaxWrongGuesses());
+        System.out.println("Guessed letters: " + gameState.getWrongLetters());
     }
 
     /**
@@ -21,7 +23,32 @@ public class Display {
      */
     public void drawHangman(int guessesRemaining, int maxWrongGuesses)
     {
+        System.out.println("Hangman:");
 
+        switch (maxWrongGuesses - guessesRemaining) {
+            case 0:
+                System.out.println("    +---+\n    |   |\n        |\n        |\n        |\n    ====");
+                break;
+            case 1:
+                System.out.println("    +---+\n    |   |\n    O   |\n        |\n        |\n    ====");
+                break;
+            case 2:
+                System.out.println("    +---+\n    |   |\n    O   |\n    |   |\n        |\n    ====");
+                break;
+            case 3:
+                System.out.println("    +---+\n    |   |\n    O   |\n   /|   |\n        |\n    ====");
+                break;
+            case 4:
+                System.out.println("    +---+\n    |   |\n    O   |\n   /|\\  |\n        |\n    ====");
+                break;
+            case 5:
+                System.out.println("    +---+\n    |   |\n    O   |\n   /|\\  |\n   /    |\n    ====");
+                break;
+            case 6:
+                System.out.println("    +---+\n    |   |\n    O   |\n   /|\\  |\n   / \\  |\n    ====");
+                System.out.println("Game Over!");
+                break;
+        }
     }
 
     /**
@@ -30,6 +57,8 @@ public class Display {
      */
     public void showWinMessage(GameState gameState)
     {
+        System.out.println("\nCongratulations, you won!");
+        System.out.println("Your score is: " + gameState.getGuessReminding()*10);
 
     }
 
@@ -39,6 +68,6 @@ public class Display {
      */
     public void showLoseMessage(String targetWord)
     {
-
+        System.out.println("\nSorry, you lost. The correct word was: " + targetWord);
     }
 }
