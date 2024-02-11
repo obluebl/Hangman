@@ -31,3 +31,4 @@ public class InputHandler {
         return inputLetter.charAt(0);
     }
 }
+

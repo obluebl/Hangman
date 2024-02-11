@@ -1,9 +1,9 @@
 package stacs;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Random;
 
 
@@ -13,29 +13,21 @@ import java.util.Random;
 public class RandomWords {
     public static String getWord() {
 
-        String filePath= "src/main/resources/wordlist.txt";
-        ArrayList<String> words = new ArrayList<>();
+        String filePath = "src/main/resources/wordlist.txt";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath)))
-        {
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                words.add(line.trim());
+        try {
+            List<String> words = Files.readAllLines(Paths.get(filePath));
+
+            if (words.isEmpty()) {
+                System.out.println("The word list is empty.");
+                return null;
             }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
+
+            Random random = new Random();
+            return words.get(random.nextInt(words.size()));
+        } catch (IOException e) {
+            System.out.println("Failed to read the word list: " + e.getMessage());
             return null;
         }
-
-        if (words.isEmpty())
-        {
-            return null;
-        }
-
-        Random random = new Random();
-        int index = random.nextInt(words.size());
-        return words.get(index);
     }
 }
